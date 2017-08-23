@@ -1,7 +1,7 @@
 /*ToDo
 1. Make one Colour more darker //done
-2. handleCorrect and handleWrong should be working properly with gameover state
-2.5 can add start screen/gameover screen
+2. handleCorrect and handleWrong should be working properly with gameover state //done
+2.5 can add start screen/gameover screen //done
 3. better ui
 4. clean up code
 **/
@@ -26,6 +26,7 @@ class Game extends Component{
       this.generateColor = this.generateColor.bind(this);
       this.generateDarkerColor = this.generateDarkerColor.bind(this);
       this.handleCorrect = this.handleCorrect.bind(this);
+      this.handleWrong = this.handleWrong.bind(this);
       this.hexMinusOne = this.hexMinusOne.bind(this);
       var color = this.generateColor();
       var darkerColor = this.generateDarkerColor(color, "red");
@@ -78,14 +79,23 @@ class Game extends Component{
 
   render(){
 
-    if(this.state.firstOneIsDarker){
+    if(this.state.gameover === true){
+      return(
+        <div className="Game">
+          <p>Game Over</p>
+          Your score is: <Score score={this.state.score}/>
+        </div>
+      )
+    }
+
+    else if(this.state.firstOneIsDarker){
       return(
       <div className="Game">
         <Score score={this.state.score}/>
         <Square color={this.state.darkerColor}
                 onAnswer={this.handleCorrect}/>
         <Square color={this.state.color}
-                onAnswer={this.handleCorrect}/>
+                onAnswer={this.handleWrong}/>
       </div>
     )
     } 
@@ -94,14 +104,12 @@ class Game extends Component{
         <div className="Game">
           <Score score={this.state.score}/>
           <Square color={this.state.color}
-                  onAnswer={this.handleCorrect}/>
+                  onAnswer={this.handleWrong}/>
           <Square color={this.state.darkerColor}
                   onAnswer={this.handleCorrect}/>
         </div>
       )
     }
-
-    
   }
 }
 
